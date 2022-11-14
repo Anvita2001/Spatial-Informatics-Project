@@ -1,0 +1,16 @@
+var wms = new ol.layer.Tile({
+						source : new ol.source.TileWMS({
+					url : 'http://localhost:8080/geoserver/lsi/wms',
+					params : {
+							'LAYERS' :'lsi:india_states',
+							'FORMAT' : 'image/png',
+							'TILED' : true
+						},
+							serverType : 'geoserver',
+							projection : 'EPSG:4326'
+					}),
+					title: 'States',
+					visible : true
+					});
+
+	map.addLayer(wms);

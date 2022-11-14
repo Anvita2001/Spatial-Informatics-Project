@@ -1,0 +1,69 @@
+// add query layer
+var query_wms = new ol.layer.Tile({
+						source : new ol.source.TileWMS({
+					url : 'http://localhost:8080/geoserver/lsi/wms',
+					params : {
+							'LAYERS' : 'lsi:state_query',
+							'FORMAT' : 'image/png',
+							'TILED' : true,
+							viewparams:'n:',
+						},
+							serverType : 'geoserver',
+							projection : 'EPSG:4326'
+					}),
+					title: 'Query',
+					visible : true
+					});
+
+	map.addLayer(query_wms);
+
+// define style for UI to query
+<style type="text/css">
+.query
+{
+	position: absolute;
+	top: 2%;
+	left: 5%;
+	font-weight: bold;
+	color: black;
+	z-index: 900;
+}
+</style>
+
+// design ui 
+<div class="query">
+	<form>
+		<select id="state_name">
+		  <option value="Telangana">Telangana</option>
+		  <option value="Tamil nadu">Tamilnadu</option>
+		  <option value="Madhya Pradesh" >Madhya Pradesh</option>
+		  <option value="Kerala">Kerala</option>
+		  <option value="Karnataka">Karnataka</option>
+		</select> 
+		<button type="button" onclick="callQuery()">Show</button>
+	</form>
+</div>
+
+// create a function to run query
+function callQuery()
+	{
+
+		var params=document.getElementById("state_name").value;
+		map.removeLayer(query_wms);
+		query_wms = new ol.layer.Tile({
+						source : new ol.source.TileWMS({
+					url : 'http://localhost:8080/geoserver/lsi/wms',
+					params : {
+							'LAYERS' : 'lsi:state_query',
+							'FORMAT' : 'image/png',
+							'TILED' : true,
+							viewparams:'x:'+params,
+						},
+							serverType : 'geoserver',
+							projection : 'EPSG:4326'
+					}),
+					title: 'Query',
+					visible : true
+					});
+			 map.addLayer(query_wms);
+	}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script>
+      var map = new ol.Map({
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM(),
+		title:'OSM'
+          })
+        ],
+        target: 'map',
+        view: new ol.View({
+          center: ol.proj.transform([78.5193, 17.5124], 'EPSG:4326', 'EPSG:900913'),
+          zoom: 10
+        }),
+controls : ol.control.defaults({
+			attributionOptions : ({
+				collapsible : true
+			})
+		}).extend([ new ol.control.ScaleLine(),new ol.control.FullScreen(),
+							new ol.control.OverviewMap() ]),
+});
+
+      var wms = new ol.layer.Tile({
+						source : new ol.source.TileWMS({
+					url : 'http://localhost:8080/geoserver/SIProject/wms',
+					params : {
+							'LAYERS' :'SIProject:ghmc-area',
+							'FORMAT' : 'image/png',
+							'TILED' : true
+						},
+							serverType : 'geoserver',
+							projection : 'EPSG:4326'
+					}),
+					title: 'GHMC',
+					visible : true
+					});
+         
+
+// 	map.addLayer(wms);
+//   var mousePositionControl = new ol.control.MousePosition({
+// 		coordinateFormat : ol.coordinate.createStringXY(4),
+// 		projection : 'EPSG:4326'
+// 	});
+//   map.addLayer(mousePositionControl);
+
+// add query layer
+var query_wms0 = new ol.layer.Tile({
+						source : new ol.source.TileWMS({
+					url : 'http://localhost:8080/geoserver/SIProject/wms',
+					params : {
+							'LAYERS' : 'SIProject:ghmc-area',
+							'FORMAT' : 'image/png',
+							'TILED' : true,
+							viewparams:'n:',
+						},
+							serverType : 'geoserver',
+							projection : 'EPSG:4326'
+					}),
+					title: 'GHMC',
+					visible : true
+					});
+
+	map.addLayer(query_wms0);
+var query_wms = new ol.layer.Tile({
+						source : new ol.source.TileWMS({
+					url : 'http://localhost:8080/geoserver/SIProject/wms',
+					params : {
+							'LAYERS' : 'SIProject:paths',
+							'FORMAT' : 'image/png',
+							'TILED' : true,
+							viewparams:'n:',
+						},
+							serverType : 'geoserver',
+							projection : 'EPSG:4326'
+					}),
+					title: 'paths',
+					visible : true
+					});
+
+	map.addLayer(query_wms);
+	var query_wms1 = new ol.layer.Tile({
+						source : new ol.source.TileWMS({
+					url : 'http://localhost:8080/geoserver/SIProject/wms',
+					params : {
+							'LAYERS' : 'SIProject:random_points_post',
+							'FORMAT' : 'image/png',
+							'TILED' : true,
+							viewparams:'n:',
+						},
+							serverType : 'geoserver',
+							projection : 'EPSG:4326'
+					}),
+					title: 'random_points',
+					visible : true
+					});
+
+	map.addLayer(query_wms1);
+	var query_wms2 = new ol.layer.Tile({
+						source : new ol.source.TileWMS({
+					url : 'http://localhost:8080/geoserver/SIProject/wms',
+					params : {
+							'LAYERS' : 'SIProject:vaccination_centres_post',
+							'FORMAT' : 'image/png',
+							'TILED' : true,
+							viewparams:'n:',
+						},
+							serverType : 'geoserver',
+							projection : 'EPSG:4326'
+					}),
+					title: 'vacc_centres',
+					visible : true
+					});
+
+	map.addLayer(query_wms2);
+</script>
+
+<style type="text/css">
+.query
+{
+	position: absolute;
+	top: 2%;
+	left: 5%;
+	font-weight: bold;
+	color: black;
+	z-index: 900;
+}
+</style>
+
+
+
+<!-- ,new ol.control.mousePositionControl() -->
+  </body>
+</html>
