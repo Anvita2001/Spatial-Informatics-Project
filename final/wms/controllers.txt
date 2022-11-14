@@ -1,0 +1,7 @@
+// controls to add scale, full screen & overview map
+controls : ol.control.defaults({
+			attributionOptions : ({
+				collapsible : true
+			})
+		}).extend([ new ol.control.ScaleLine(),new ol.control.FullScreen(),
+							new ol.control.OverviewMap() ]),
